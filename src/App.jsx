@@ -9,6 +9,7 @@ import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
 import ProductDetail from './pages/ProductDetail';
 import AdminPage from './pages/AdminPage';
+import SplashScreen from './components/SplashScreen';
 import './App.css';
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
   if (selectedProduct) {
     return (
       <AppProvider>
+        <SplashScreen />
         <CartProvider>
           <div className="app-shell">
             <ProductDetail product={selectedProduct} onBack={handleBack} />
@@ -51,6 +53,7 @@ export default function App() {
 
   return (
     <AppProvider>
+      <SplashScreen />
       <CartProvider>
         <div className="app-shell">
         {page !== 'product' && (
