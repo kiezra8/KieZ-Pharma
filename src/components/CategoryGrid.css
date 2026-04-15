@@ -1,0 +1,69 @@
+.category-section {
+  padding: 0 16px 24px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px 8px;
+}
+
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  animation: catFadeUp 0.5s ease both;
+}
+
+@keyframes catFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cat-img-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2px solid;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cat-card:active .cat-img-wrap {
+  transform: scale(0.92);
+}
+
+.cat-card:hover .cat-img-wrap {
+  transform: scale(1.07);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+.cat-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cat-shine {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.28) 0%, transparent 100%);
+  border-radius: 50% 50% 0 0;
+}
+
+.cat-name {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #1a1a2e;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 64px;
+}

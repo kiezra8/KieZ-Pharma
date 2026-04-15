@@ -1,0 +1,12 @@
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background: #f5f7fa;
+  box-shadow: 0 0 60px rgba(0,0,0,0.15);
+}
+
+.app-main {
+  /* room for sticky header (~80px) and bottom nav (~68px) */
+}

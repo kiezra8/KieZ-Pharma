@@ -1,0 +1,25 @@
+.essential-section {
+  padding: 0 16px 20px;
+}
+
+.essential-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.essential-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #FF4F5A;
+  background: #fff0f1;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.essential-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}

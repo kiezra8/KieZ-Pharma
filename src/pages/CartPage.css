@@ -1,0 +1,254 @@
+.cart-page {
+  padding: 16px 16px 120px;
+  min-height: 100vh;
+  background: #f5f7fa;
+  animation: pageIn 0.3s ease;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cart-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.cart-clear {
+  background: none;
+  border: 1px solid #FF4F5A;
+  color: #FF4F5A;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  animation: cardPop 0.35s ease both;
+}
+
+@keyframes cardPop {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.cart-item-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cart-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 3px;
+  line-height: 1.4;
+}
+
+.cart-item-cat {
+  font-size: 10px;
+  color: #FF4F5A;
+  font-weight: 700;
+  background: #fff0f1;
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.cart-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.cart-item-price {
+  font-size: 13px;
+  font-weight: 800;
+  color: #FF4F5A;
+}
+
+.cart-qty-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #f5f7fa;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cart-qty-ctrl button {
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: #FF4F5A;
+  cursor: pointer;
+}
+
+.cart-qty-ctrl span {
+  width: 30px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.cart-item-subtotal {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.cart-remove {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f5f7fa;
+  border: none;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #aaa;
+}
+
+/* Summary */
+.cart-summary {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+}
+
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13.5px;
+  color: #555;
+}
+
+.cart-summary-row.total {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1a2e;
+}
+
+.summary-val { font-weight: 700; color: #1a1a2e; }
+.summary-val.green { color: #10c97e; }
+
+.cart-summary-divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 8px 0;
+}
+
+/* Footer */
+.cart-footer {
+  position: fixed;
+  bottom: 68px;
+  left: 0; right: 0;
+  padding: 10px 16px;
+  background: #fff;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.cart-order-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+}
+
+.cart-order-btn:active { opacity: 0.88; transform: scale(0.98); }
+
+/* Empty state */
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 12px;
+  animation: pageIn 0.3s ease;
+}
+
+.cart-empty-icon {
+  width: 110px;
+  height: 110px;
+  background: #f5f7fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-empty h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.cart-empty p {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
+}
