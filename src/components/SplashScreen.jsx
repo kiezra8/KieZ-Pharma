@@ -3,9 +3,9 @@ import { useApp } from '../context/AppContext';
 import './SplashScreen.css';
 
 export default function SplashScreen() {
-  const { loading } = useApp();
+  const { loading, error, fetchData } = useApp();
 
-  if (!loading) return null;
+  if (!loading && !error) return null;
 
   return (
     <div className="splash-screen">
@@ -14,8 +14,19 @@ export default function SplashScreen() {
           <span className="splash-cross">✚</span>
         </div>
         <h1 className="splash-brand">KieZ Pharma</h1>
-        <p className="splash-tagline">Medical Supplies</p>
-        <div className="splash-loader"></div>
+        
+        {error ? (
+          <div className="splash-error">
+            <p>Unable to connect to database.</p>
+            <small>{error}</small>
+            <button className="retry-btn" onClick={fetchData}>Retry Connection</button>
+          </div>
+        ) : (
+          <>
+            <p className="splash-tagline">Medical Supplies</p>
+            <div className="splash-loader"></div>
+          </>
+        )}
       </div>
     </div>
   );
