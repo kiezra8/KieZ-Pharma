@@ -123,11 +123,65 @@ export default function AdminPage({ onBack }) {
     }
   };
 
+  const handleSeed = async () => {
+    if (!window.confirm("This will upload all initial products and categories to your database. Continue?")) return;
+    setLoading(true);
+    try {
+      const { categories: sCats, products: sProds, heroSlides: sBans } = await import('../data/products');
+      
+      // Seed Categories
+      for (const cat of sCats) {
+        await supabase.from('categories').insert([{ name: cat.name, icon: cat.icon, color: cat.color }]);
+      }
+      // Seed Banners
+      for (const ban of sBans) {
+        await supabase.from('banners').insert([{ title: ban.title, subtitle: ban.subtitle, image: ban.image, badge: ban.badge, cta: ban.cta }]);
+      }
+      // Seed Products
+      for (const prod of sProds) {
+        await supabase.from('products').insert([{
+          name: prod.name,
+          category: prod.category,
+          price: prod.price,
+          image: prod.image,
+          badge: prod.badge,
+          description: prod.description,
+          in_stock: prod.inStock
+        }]);
+      }
+      
+      await fetchData();
+      alert("Database seeded successfully with initial data!");
+    } catch (err) {
+      alert("Seeding failed: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const isUsingPlaceholder = !supabaseUrl || supabaseUrl.includes('placeholder');
+
   return (
     <div className="admin-page">
       <div className="admin-header">
         <button className="admin-back" onClick={onBack}>‹ Back</button>
         <h2>Admin Console</h2>
+      </div>
+
+      <div className="connection-status">
+        {isUsingPlaceholder ? (
+          <div className="status-badge error">
+            ⚠️ Cloudflare is missing your Supabase Keys. Check Environment Variables.
+          </div>
+        ) : (
+          <div className="status-badge success">
+            ✅ Connected to: {supabaseUrl.split('//')[1].split('.')[0]}
+          </div>
+        )}
+        <button className="seed-btn" onClick={handleSeed} disabled={loading}>
+          🌱 Seed Database from Local Data
+        </button>
       </div>
 
       <div className="admin-tabs">

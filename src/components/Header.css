@@ -108,11 +108,12 @@
   display: flex;
   align-items: center;
   flex: 1;
+  min-width: 0;
 }
 
 .search-icon {
   position: absolute;
-  left: 10px;
+  left: 9px;
   pointer-events: none;
 }
 
@@ -121,12 +122,18 @@
   background: #f5f7fa;
   border: none;
   border-radius: 20px;
-  padding: 8px 12px 8px 30px;
+  padding: 8px 10px 8px 28px;
   font-size: 13px;
   font-family: 'Inter', sans-serif;
   color: #1a1a2e;
   outline: none;
   transition: box-shadow 0.2s;
+}
+
+@media (max-width: 400px) {
+  .brand-text { display: none; } /* Hide brand text to save space for search on very small phones */
+  .brand-logo { width: 32px; height: 32px; }
+  .header-top { gap: 8px; }
 }
 
 .search-input:focus {
