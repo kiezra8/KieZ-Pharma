@@ -43,20 +43,6 @@ export default function HomePage({ onProductClick, onCategoryClick, searchQuery 
       ) : (
         <>
           <CategoryGrid onCategoryClick={onCategoryClick} />
-
-          <div className="trending-banner">
-            <img
-              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=200&fit=crop"
-              alt="Hospital supplies"
-              className="trending-img"
-            />
-            <div className="trending-overlay" style={{background: 'linear-gradient(90deg, rgba(26,26,46,0.85) 0%, transparent 100%)'}}>
-              <span className="trending-tag">TRENDING NOW</span>
-              <h3>Shop Surgical Kits</h3>
-              <p>Certified for Ugandan healthcare facilities</p>
-            </div>
-          </div>
-
           <EssentialSupplies onProductClick={onProductClick} />
 
           {/* All Products */}

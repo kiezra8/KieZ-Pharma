@@ -26,12 +26,10 @@ export default function HeroBanner() {
     <div className="hero-banner">
       <div className={`hero-slide ${animating ? 'hero-slide--exit' : 'hero-slide--enter'}`} key={current}>
         <img src={slide.image} alt={slide.title} className="hero-bg-img" />
-        <div className="hero-overlay" style={{ background: slide.gradient || 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)' }} />
+        <div className="hero-overlay" style={{ background: 'linear-gradient(to top, rgba(26,26,46,0.9) 0%, rgba(26,26,46,0.1) 100%)' }} />
         <div className="hero-content">
-          {slide.badge && <span className="hero-badge">{slide.badge}</span>}
           <h1 className="hero-title">{slide.title}</h1>
           <p className="hero-subtitle">{slide.subtitle}</p>
-          <button className="hero-cta">{slide.cta || 'Shop Now'} →</button>
         </div>
       </div>
       <div className="hero-dots">
