@@ -4,9 +4,17 @@ import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
 import './CategoriesPage.css';
 
-export default function CategoriesPage({ onProductClick }) {
+export default function CategoriesPage({ onProductClick, initialCategory }) {
   const { products, categories } = useApp();
-  const [activeCategory, setActiveCategory] = useState(categories?.[0]?.name || '');
+  const [activeCategory, setActiveCategory] = useState(initialCategory || categories?.[0]?.name || '');
+
+  React.useEffect(() => {
+    if (initialCategory) {
+      setActiveCategory(initialCategory);
+    } else if (categories?.length > 0) {
+      setActiveCategory(categories[0].name);
+    }
+  }, [initialCategory, categories]);
 
   const filtered = products.filter(p => p.category === activeCategory);
 

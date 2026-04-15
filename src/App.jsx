@@ -14,6 +14,7 @@ import './App.css';
 
 export default function App() {
   const [page, setPage] = useState('home');
+  const [targetCategory, setTargetCategory] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -23,18 +24,23 @@ export default function App() {
   };
 
   const handleCategoryClick = (category) => {
+    setTargetCategory(category);
     setPage('categories');
+    window.scrollTo(0, 0);
   };
 
   const handleNavigate = (target) => {
     setSelectedProduct(null);
     setSearchQuery('');
+    setTargetCategory(null); // Reset so it defaults to the first category if coming via BottomNav
     setPage(target);
+    window.scrollTo(0, 0);
   };
 
   const handleBack = () => {
     setSelectedProduct(null);
     setPage('home');
+    window.scrollTo(0, 0);
   };
 
   if (selectedProduct) {
@@ -73,7 +79,7 @@ export default function App() {
             />
           )}
           {page === 'categories' && (
-            <CategoriesPage onProductClick={handleProductClick} />
+            <CategoriesPage onProductClick={handleProductClick} initialCategory={targetCategory} />
           )}
           {page === 'cart' && (
             <CartPage onProductClick={handleProductClick} />

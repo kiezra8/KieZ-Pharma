@@ -14,7 +14,7 @@ export default function CategoryGrid({ onCategoryClick }) {
             key={cat.id}
             className="cat-card"
             style={{ animationDelay: `${i * 60}ms` }}
-            onClick={() => onCategoryClick && onCategoryClick(cat)}
+            onClick={() => onCategoryClick && onCategoryClick(cat.name)}
           >
             <div className="cat-img-wrap" style={{ background: cat.color + '22', borderColor: cat.color + '55' }}>
               <img src={cat.icon} alt={cat.name} className="cat-img" />
