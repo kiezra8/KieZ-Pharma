@@ -8,15 +8,17 @@ export default function HeroBanner() {
   const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
+    if (!banners || banners.length <= 1) return;
+
     const timer = setInterval(() => {
       setAnimating(true);
       setTimeout(() => {
-        setCurrent(c => banners.length > 0 ? (c + 1) % banners.length : 0);
+        setCurrent(c => (c + 1) % banners.length);
         setAnimating(false);
       }, 400);
     }, 4000);
     return () => clearInterval(timer);
-  }, []);
+  }, [banners.length]);
 
   if (!banners || banners.length === 0) return null;
 
