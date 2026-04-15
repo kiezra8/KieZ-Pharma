@@ -1,8 +1,10 @@
 import React from 'react';
-import { categories } from '../data/products';
+import { useApp } from '../context/AppContext';
 import './CategoryGrid.css';
 
 export default function CategoryGrid({ onCategoryClick }) {
+  const { categories } = useApp();
+
   return (
     <section className="category-section">
       <h2 className="section-title">Shop by Category</h2>

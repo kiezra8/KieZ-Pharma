@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CartProvider } from './context/CartContext';
+import { AppProvider } from './context/AppContext';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import HomePage from './pages/HomePage';
@@ -7,6 +8,7 @@ import CategoriesPage from './pages/CategoriesPage';
 import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
 import ProductDetail from './pages/ProductDetail';
+import AdminPage from './pages/AdminPage';
 import './App.css';
 
 export default function App() {
@@ -36,18 +38,21 @@ export default function App() {
 
   if (selectedProduct) {
     return (
-      <CartProvider>
-        <div className="app-shell">
-          <ProductDetail product={selectedProduct} onBack={handleBack} />
-          <BottomNav activePage={page} onNavigate={handleNavigate} />
-        </div>
-      </CartProvider>
+      <AppProvider>
+        <CartProvider>
+          <div className="app-shell">
+            <ProductDetail product={selectedProduct} onBack={handleBack} />
+            <BottomNav activePage={page} onNavigate={handleNavigate} />
+          </div>
+        </CartProvider>
+      </AppProvider>
     );
   }
 
   return (
-    <CartProvider>
-      <div className="app-shell">
+    <AppProvider>
+      <CartProvider>
+        <div className="app-shell">
         {page !== 'product' && (
           <Header
             onCartClick={() => handleNavigate('cart')}
@@ -70,11 +75,13 @@ export default function App() {
           {page === 'cart' && (
             <CartPage onProductClick={handleProductClick} />
           )}
-          {page === 'account' && <AccountPage />}
+          {page === 'account' && <AccountPage onNavigate={handleNavigate} />}
+          {page === 'admin' && <AdminPage onBack={() => handleNavigate('account')} />}
         </main>
 
         <BottomNav activePage={page} onNavigate={handleNavigate} />
       </div>
-    </CartProvider>
+      </CartProvider>
+    </AppProvider>
   );
 }

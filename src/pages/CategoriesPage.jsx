@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { products, categories, formatPrice } from '../data/products';
+import { formatPrice } from '../data/products';
+import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
 import './CategoriesPage.css';
 
 export default function CategoriesPage({ onProductClick }) {
-  const [activeCategory, setActiveCategory] = useState(categories[0].name);
+  const { products, categories } = useApp();
+  const [activeCategory, setActiveCategory] = useState(categories?.[0]?.name || '');
 
   const filtered = products.filter(p => p.category === activeCategory);
 

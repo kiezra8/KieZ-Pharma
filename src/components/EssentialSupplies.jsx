@@ -1,9 +1,15 @@
 import React from 'react';
-import { essentialSupplies } from '../data/products';
+import { useApp } from '../context/AppContext';
 import ProductCard from './ProductCard';
 import './EssentialSupplies.css';
 
 export default function EssentialSupplies({ onProductClick }) {
+  const { products } = useApp();
+  // using first 8 items or those marked as BEST SELLER / HOT
+  const essentialSupplies = products.filter(p => ['BEST SELLER', 'HOT'].includes(p.badge)).slice(0, 8);
+  
+  if (!essentialSupplies.length) return null;
+
   return (
     <section className="essential-section">
       <div className="essential-header">

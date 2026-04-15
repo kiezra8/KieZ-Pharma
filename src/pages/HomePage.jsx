@@ -3,10 +3,13 @@ import HeroBanner from '../components/HeroBanner';
 import CategoryGrid from '../components/CategoryGrid';
 import EssentialSupplies from '../components/EssentialSupplies';
 import ProductCard from '../components/ProductCard';
-import { products, formatPrice } from '../data/products';
+import { useApp } from '../context/AppContext';
+import { formatPrice } from '../data/products';
 import './HomePage.css';
 
 export default function HomePage({ onProductClick, onCategoryClick, searchQuery }) {
+  const { products, loading } = useApp();
+
   const filteredProducts = searchQuery
     ? products.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -22,20 +25,6 @@ export default function HomePage({ onProductClick, onCategoryClick, searchQuery 
       </div>
 
       <HeroBanner />
-
-      {/* Flash Animation Banner */}
-      <div className="flash-banner">
-        <div className="flash-left">
-          <span className="flash-icon">⚡</span>
-          <div>
-            <span className="flash-title">Flash Deals</span>
-            <span className="flash-sub">Limited time offers</span>
-          </div>
-        </div>
-        <div className="flash-right">
-          <span className="flash-countdown">Ends Soon</span>
-        </div>
-      </div>
 
       {searchQuery ? (
         <div className="search-results">
@@ -55,14 +44,13 @@ export default function HomePage({ onProductClick, onCategoryClick, searchQuery 
         <>
           <CategoryGrid onCategoryClick={onCategoryClick} />
 
-          {/* Trending Banner */}
           <div className="trending-banner">
             <img
               src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=200&fit=crop"
               alt="Hospital supplies"
               className="trending-img"
             />
-            <div className="trending-overlay">
+            <div className="trending-overlay" style={{background: 'linear-gradient(90deg, rgba(26,26,46,0.85) 0%, transparent 100%)'}}>
               <span className="trending-tag">TRENDING NOW</span>
               <h3>Shop Surgical Kits</h3>
               <p>Certified for Ugandan healthcare facilities</p>

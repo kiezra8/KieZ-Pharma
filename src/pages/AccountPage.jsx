@@ -1,29 +1,114 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useApp } from '../context/AppContext';
 import './AccountPage.css';
 
 const WHATSAPP_NUM = '256702370441';
 
-export default function AccountPage() {
+export default function AccountPage({ onNavigate }) {
+  const { user, isAdmin, signIn, signUp, signOut } = useApp();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      if (isLogin) {
+        await signIn(email, password);
+      } else {
+        await signUp(email, password);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="account-page">
       <div className="account-hero">
         <div className="account-avatar">
-          <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-          </svg>
+          {user ? (
+            <span style={{color: '#fff', fontSize: '24px', fontWeight: 'bold'}}>
+              {user.email.charAt(0).toUpperCase()}
+            </span>
+          ) : (
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          )}
         </div>
-        <h2 className="account-name">Guest User</h2>
-        <p className="account-sub">Welcome to KieZ Pharma</p>
+        <h2 className="account-name">{user ? (isAdmin ? 'Admin' : 'User') : 'Guest User'}</h2>
+        <p className="account-sub">{user ? user.email : 'Welcome to KieZ Pharma'}</p>
       </div>
 
-      <div className="account-section">
-        <h3 className="accnt-section-title">Quick Actions</h3>
+      {!user ? (
+        <div className="account-section">
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <h3>{isLogin ? 'Sign In' : 'Create Account'}</h3>
+            {error && <div className="auth-error">{error}</div>}
+            <input 
+              type="email" 
+              placeholder="Email address" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              required 
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              required 
+            />
+            <button type="submit" disabled={loading}>
+              {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Sign Up')}
+            </button>
+            <p onClick={() => setIsLogin(!isLogin)} className="auth-toggle">
+              {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
+            </p>
+          </form>
+        </div>
+      ) : (
+        <div className="account-section">
+          <h3 className="accnt-section-title">Account Settings</h3>
+          <div className="accnt-menu">
+            {isAdmin && (
+              <button className="accnt-item" onClick={() => onNavigate('admin')} style={{width: '100%', textAlign: 'left', background: 'none', borderBottom: '1px solid #f5f5f5'}}>
+                <span className="accnt-icon" style={{background: '#ffe8e8'}}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF4F5A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+                  </svg>
+                </span>
+                <span className="accnt-label" style={{color: '#FF4F5A'}}>Admin Dashboard</span>
+                <span className="accnt-arrow">›</span>
+              </button>
+            )}
+            <button className="accnt-item" onClick={signOut} style={{width: '100%', textAlign: 'left', background: 'none', borderBottom: 'none'}}>
+              <span className="accnt-icon" style={{background: '#f0f0f0'}}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+              </span>
+              <span className="accnt-label">Sign Out</span>
+              <span className="accnt-arrow">›</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="account-section" style={{marginTop: '20px'}}>
+        <h3 className="accnt-section-title">Support</h3>
         <div className="accnt-menu">
           <a className="accnt-item" href={`https://wa.me/${WHATSAPP_NUM}`} target="_blank" rel="noreferrer">
             <span className="accnt-icon wa">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.48l5.773-1.513A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.873 9.873 0 01-5.032-1.378l-.36-.214-3.735.979.999-3.648-.235-.374A9.86 9.86 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12c0 5.468-4.415 9.882-9.882 9.882z"/>
               </svg>
             </span>
             <span className="accnt-label">Chat on WhatsApp</span>
@@ -40,23 +125,7 @@ export default function AccountPage() {
           </a>
         </div>
       </div>
-
-      <div className="account-section">
-        <h3 className="accnt-section-title">About KieZ Pharma</h3>
-        <div className="accnt-info-card">
-          <p>KieZ Pharma is Uganda's trusted medical supplies distributor. We deliver quality surgical tools, diagnostics, PPE, and more — straight to clinics, hospitals, and individuals.</p>
-          <div className="accnt-contact-row">
-            <span>📍</span> Kampala, Uganda
-          </div>
-          <div className="accnt-contact-row">
-            <span>📞</span> +256 702 370 441
-          </div>
-          <div className="accnt-contact-row">
-            <span>⏰</span> Mon–Sat, 8AM – 6PM
-          </div>
-        </div>
-      </div>
-
+      
       <div className="account-version">KieZ Pharma v1.0.0</div>
     </div>
   );
