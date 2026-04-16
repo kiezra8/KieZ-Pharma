@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { formatPrice } from '../data/products';
+import React, { useState, useEffect } from 'react';
+import { formatPrice, categories as localCategories } from '../data/products';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
 import './CategoriesPage.css';
@@ -19,7 +19,7 @@ export default function CategoriesPage({ onProductClick, initialCategory }) {
     }
   }, [initialCategory, categories]);
 
-  const catData = categories.find(c => c.name === activeCategory);
+  const catData = localCategories.find(c => c.name === activeCategory);
   
   const filtered = products.filter(p => {
     const isCat = p.category === activeCategory;

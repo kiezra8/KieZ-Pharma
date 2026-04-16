@@ -26,6 +26,7 @@ CREATE TABLE public.products (
   in_stock BOOLEAN DEFAULT true,
   badge TEXT,
   brand TEXT,
+  sub_category TEXT,
   is_essential BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );

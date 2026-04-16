@@ -159,6 +159,11 @@ export default function AdminPage({ onBack }) {
     try {
       const { categories: sCats, products: sProds, heroSlides: sBans } = await import('../data/products');
       
+      // Clear potentially disorganized data first
+      await supabase.from('banners').delete().gt('id', 0);
+      await supabase.from('categories').delete().gt('id', 0);
+      await supabase.from('products').delete().gt('id', 0);
+
       // Seed Categories
       for (const cat of sCats) {
         await supabase.from('categories').insert([{ name: cat.name, icon: cat.icon, color: cat.color }]);
@@ -176,6 +181,7 @@ export default function AdminPage({ onBack }) {
           image: prod.image,
           badge: prod.badge,
           brand: prod.brand,
+          sub_category: prod.subCategory || null,
           is_essential: prod.isEssential || false,
           description: prod.description,
           in_stock: prod.inStock
