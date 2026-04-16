@@ -85,8 +85,9 @@ INSERT INTO public.categories (name, icon, color) VALUES
 -- Banners
 INSERT INTO public.banners (title, subtitle, badge, cta, image, gradient) VALUES
 ('Premium Surgical Supplies', 'Hospital-grade instruments delivered to your door', 'NEW ARRIVAL', 'Shop Now', 'https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=800&h=500&fit=crop', 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)'),
-('Diagnostic Equipment', 'Accurate, fast and reliable medical diagnostics', 'BEST SELLER', 'Explore', 'https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&h=500&fit=crop', 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)'),
-('PPE & Protection', 'Keep your staff safe with certified protection gear', 'HOT DEAL', 'View Deals', 'https://images.unsplash.com/photo-1584744982491-665216d95f8b?w=800&h=500&fit=crop', 'linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #11998e 100%)');
+('Fast & Reliable Delivery', 'Free delivery on orders above UGX 300,000. All over Uganda.', 'EXPRESS DELIVERY', 'Order Now', 'https://images.unsplash.com/photo-1586528116311-ad8662990479?w=800&h=500&fit=crop', 'linear-gradient(135deg, #FF6B6B 0%, #EE5253 100%)'),
+('Pharmacy & Drugs', 'All your medications and prescriptions in one place', 'POPULAR', 'Browse Drugs', 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=800&h=500&fit=crop', 'linear-gradient(135deg, #FF8B94 0%, #FFB7B2 100%)'),
+('Diagnostic Equipment', 'Accurate, fast and reliable medical diagnostics', 'BEST SELLER', 'Explore', 'https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&h=500&fit=crop', 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)');
 
 -- Products
 INSERT INTO public.products (name, category, price, original_price, rating, reviews, sold, image, images, description, features, in_stock, badge, brand, is_essential) VALUES

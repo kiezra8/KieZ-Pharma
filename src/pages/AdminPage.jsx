@@ -175,6 +175,8 @@ export default function AdminPage({ onBack }) {
           price: prod.price,
           image: prod.image,
           badge: prod.badge,
+          brand: prod.brand,
+          is_essential: prod.isEssential || false,
           description: prod.description,
           in_stock: prod.inStock
         }]);
