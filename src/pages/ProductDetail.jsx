@@ -64,7 +64,10 @@ export default function ProductDetail({ product, onBack }) {
 
       <div className="detail-body">
         {/* Category & Name */}
-        <span className="detail-cat">{product.category}</span>
+        <div className="detail-header-row">
+          <span className="detail-cat">{product.category}</span>
+          {product.brand && <span className="detail-brand-tag">{product.brand}</span>}
+        </div>
         <h1 className="detail-name">{product.name}</h1>
 
         {/* Rating Row */}

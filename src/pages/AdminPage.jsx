@@ -8,8 +8,11 @@ export default function AdminPage({ onBack }) {
   const [activeTab, setActiveTab] = useState('products');
   const [loading, setLoading] = useState(false);
 
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [editingField, setEditingField] = useState({ id: null, field: '', value: '' });
+
   // Form states
-  const [productForm, setProductForm] = useState({ name: '', category: '', price: '', imageFile: null, imagePreview: '' });
+  const [productForm, setProductForm] = useState({ name: '', category: '', brand: '', description: '', price: '', imageFile: null, imagePreview: '' });
   const [categoryForm, setCategoryForm] = useState({ name: '', color: '#FF6B6B', iconFile: null, iconPreview: '' });
   const [bannerForm, setBannerForm] = useState({ title: '', subtitle: '', imageFile: null, imagePreview: '' });
 
@@ -23,6 +26,31 @@ export default function AdminPage({ onBack }) {
       await supabase.from(table).update({ [colName]: url }).eq('id', id);
       await fetchData();
       alert("Image updated!");
+    } catch(err) {
+      alert("Error: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateProduct = async (id, field, value) => {
+    try {
+      setLoading(true);
+      await supabase.from('products').update({ [field]: value }).eq('id', id);
+      await fetchData();
+      setEditingField({ id: null, field: '', value: '' });
+    } catch(err) {
+      alert("Error: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleEssential = async (id, currentStatus) => {
+    try {
+      setLoading(true);
+      await supabase.from('products').update({ is_essential: !currentStatus }).eq('id', id);
+      await fetchData();
     } catch(err) {
       alert("Error: " + err.message);
     } finally {
@@ -50,11 +78,13 @@ export default function AdminPage({ onBack }) {
       await supabase.from('products').insert([{
         name: productForm.name,
         category: productForm.category,
+        brand: productForm.brand,
+        description: productForm.description,
         price: Number(productForm.price),
         image: imageUrl
       }]);
       await fetchData();
-      setProductForm({ name: '', category: '', price: '', imageFile: null, imagePreview: '' });
+      setProductForm({ name: '', category: '', brand: '', description: '', price: '', imageFile: null, imagePreview: '' });
       alert("Product added successfully!");
     } catch (err) {
       alert("Error: " + err.message);
@@ -198,11 +228,13 @@ export default function AdminPage({ onBack }) {
             <h3>Add New Product</h3>
             <form onSubmit={handleAddProduct} className="admin-form">
               <input type="text" placeholder="Product Name" value={productForm.name} onChange={e=>setProductForm({...productForm, name: e.target.value})} required/>
+              <input type="text" placeholder="Brand" value={productForm.brand} onChange={e=>setProductForm({...productForm, brand: e.target.value})} />
               <input type="number" placeholder="Price (UGX)" value={productForm.price} onChange={e=>setProductForm({...productForm, price: e.target.value})} required/>
               <select value={productForm.category} onChange={e=>setProductForm({...productForm, category: e.target.value})} required>
                 <option value="">Select Category</option>
                 {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
               </select>
+              <textarea placeholder="Description" value={productForm.description} onChange={e=>setProductForm({...productForm, description: e.target.value})} style={{width: '100%', borderRadius: '12px', padding: '12px', border: '1px solid #ddd', minHeight: '80px'}} />
               <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" onChange={e => handleImagePick(e, setProductForm)} required />
               {productForm.imagePreview && <img src={productForm.imagePreview} alt="preview" className="img-preview" />}
               <button type="submit" disabled={loading}>Add Product</button>
@@ -213,10 +245,45 @@ export default function AdminPage({ onBack }) {
               {products.map(p => (
                 <div key={p.id} className="admin-list-item">
                   <img src={p.image} alt="" />
-                  <div>
-                    <strong>{p.name}</strong>
-                    <span>{p.category} | UGX {p.price}</span>
+                  <div style={{flex: 1}}>
+                    <strong>{p.name} {p.brand ? `(${p.brand})` : ''}</strong>
+                    <div style={{fontSize: '0.8rem', color: '#666', marginTop: '4px'}}>
+                      {editingField.id === p.id && editingField.field === 'price' ? (
+                        <input 
+                          type="number" 
+                          value={editingField.value} 
+                          onChange={(e) => setEditingField({ ...editingField, value: e.target.value })}
+                          onBlur={() => handleUpdateProduct(p.id, 'price', Number(editingField.value))}
+                          autoFocus
+                        />
+                      ) : (
+                        <span onClick={() => setEditingField({ id: p.id, field: 'price', value: p.price })}>
+                          UGX {p.price} ✏️
+                        </span>
+                      )}
+                      {" | "}
+                      {editingField.id === p.id && editingField.field === 'description' ? (
+                        <textarea 
+                          value={editingField.value} 
+                          onChange={(e) => setEditingField({ ...editingField, value: e.target.value })}
+                          onBlur={() => handleUpdateProduct(p.id, 'description', editingField.value)}
+                          autoFocus
+                          style={{width: '100%'}}
+                        />
+                      ) : (
+                        <span onClick={() => setEditingField({ id: p.id, field: 'description', value: p.description || '' })}>
+                          {p.description ? 'Edit Description' : 'Add Description'} ✏️
+                        </span>
+                      )}
+                    </div>
                   </div>
+                  <button 
+                    className={`essential-toggle ${p.is_essential ? 'active' : ''}`} 
+                    onClick={() => toggleEssential(p.id, p.is_essential)}
+                    title="Toggle Essential"
+                  >
+                    {p.is_essential ? '⭐ Essential' : '☆ Make Essential'}
+                  </button>
                   <button className="del-btn" onClick={() => deleteItem('products', p.id)}>🗑</button>
                   <label className="change-img-btn">
                      <span>🖼 Edit</span>

@@ -70,7 +70,7 @@
   font-weight: 800;
   line-height: 1.2;
   margin: 0 0 6px;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  text-shadow: none;
 }
 
 .hero-subtitle {
@@ -91,7 +91,7 @@
   cursor: pointer;
   letter-spacing: 0.5px;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 20px rgba(255,79,90,0.5);
+  box-shadow: none;
 }
 
 .hero-cta:active { transform: scale(0.95); }

@@ -205,6 +205,40 @@
   cursor: pointer;
 }
 
+.essential-toggle {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.essential-toggle.active {
+  background: #FFF9C4;
+  border-color: #FBC02D;
+  color: #F57F17;
+}
+
+.admin-list-item input, .admin-list-item textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #FF4F5A;
+  border-radius: 6px;
+  font-size: 13px;
+  margin: 4px 0;
+}
+
+.admin-list-item span[onClick] {
+  cursor: pointer;
+  text-decoration: underline dotted;
+  color: #4A90E2;
+}
+
 .admin-loading {
   text-align: center;
   padding: 20px;

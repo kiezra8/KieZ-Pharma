@@ -28,7 +28,7 @@ export default function HeroBanner() {
     <div className="hero-banner">
       <div className={`hero-slide ${animating ? 'hero-slide--exit' : 'hero-slide--enter'}`} key={current}>
         <img src={slide.image} alt={slide.title} className="hero-bg-img" />
-        <div className="hero-overlay" style={{ background: 'linear-gradient(to top, rgba(26,26,46,0.9) 0%, rgba(26,26,46,0.1) 100%)' }} />
+        <div className="hero-overlay" style={{ background: 'linear-gradient(to top, rgba(26,26,46,0.8) 0%, rgba(26,26,46,0) 100%)' }} />
         <div className="hero-content">
           <h1 className="hero-title">{slide.title}</h1>
           <p className="hero-subtitle">{slide.subtitle}</p>

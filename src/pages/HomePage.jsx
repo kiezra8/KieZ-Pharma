@@ -19,11 +19,6 @@ export default function HomePage({ onProductClick, onCategoryClick, searchQuery 
 
   return (
     <div className="home-page">
-      {/* Promotional Banners Strip */}
-      <div className="promo-strip">
-        <span>🚚 Free delivery on orders above UGX 300,000</span>
-      </div>
-
       <HeroBanner />
 
       {searchQuery ? (

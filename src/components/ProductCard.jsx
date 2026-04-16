@@ -26,6 +26,7 @@ export default function ProductCard({ product, onClick }) {
         {discount && <span className="product-card__discount">-{discount}%</span>}
       </div>
       <div className="product-card__body">
+        {product.brand && <p className="product-card__brand">{product.brand}</p>}
         <p className="product-card__name">{product.name}</p>
         <div className="product-card__rating">
           <span className="stars">{'★'.repeat(Math.floor(product.rating))}</span>
