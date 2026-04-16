@@ -12,7 +12,7 @@ export default function AdminPage({ onBack }) {
   const [editingField, setEditingField] = useState({ id: null, field: '', value: '' });
 
   // Form states
-  const [productForm, setProductForm] = useState({ name: '', category: '', brand: '', description: '', price: '', imageFile: null, imagePreview: '' });
+  const [productForm, setProductForm] = useState({ name: '', category: '', brand: '', subCategory: '', description: '', price: '', imageFile: null, imagePreview: '' });
   const [categoryForm, setCategoryForm] = useState({ name: '', color: '#FF6B6B', iconFile: null, iconPreview: '' });
   const [bannerForm, setBannerForm] = useState({ title: '', subtitle: '', imageFile: null, imagePreview: '' });
 
@@ -79,12 +79,13 @@ export default function AdminPage({ onBack }) {
         name: productForm.name,
         category: productForm.category,
         brand: productForm.brand,
+        sub_category: productForm.subCategory,
         description: productForm.description,
         price: Number(productForm.price),
         image: imageUrl
       }]);
       await fetchData();
-      setProductForm({ name: '', category: '', brand: '', description: '', price: '', imageFile: null, imagePreview: '' });
+      setProductForm({ name: '', category: '', brand: '', subCategory: '', description: '', price: '', imageFile: null, imagePreview: '' });
       alert("Product added successfully!");
     } catch (err) {
       alert("Error: " + err.message);
@@ -238,10 +239,25 @@ export default function AdminPage({ onBack }) {
               <input type="text" placeholder="Product Name" value={productForm.name} onChange={e=>setProductForm({...productForm, name: e.target.value})} required/>
               <input type="text" placeholder="Brand" value={productForm.brand} onChange={e=>setProductForm({...productForm, brand: e.target.value})} />
               <input type="number" placeholder="Price (UGX)" value={productForm.price} onChange={e=>setProductForm({...productForm, price: e.target.value})} required/>
-              <select value={productForm.category} onChange={e=>setProductForm({...productForm, category: e.target.value})} required>
+              <select value={productForm.category} onChange={e=>setProductForm({...productForm, category: e.target.value, subCategory: ''})} required>
                 <option value="">Select Category</option>
                 {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
               </select>
+
+              {productForm.category === 'Pharmacy' && (
+                <select 
+                  value={productForm.subCategory} 
+                  onChange={e=>setProductForm({...productForm, subCategory: e.target.value})} 
+                  required={productForm.category === 'Pharmacy'}
+                  style={{border: '2px solid #FF4F5A'}}
+                >
+                  <option value="">Select Drug Class</option>
+                  {(categories.find(c => c.name === 'Pharmacy')?.subCategories || 
+                    ["Analgesics", "Anesthetics", "Antianginal Agents", "Antiarrhythmics", "Antiasthmatics", "Antibiotics", "Anticholinergics", "Anticoagulants", "Anticonvulsants (Antiepileptics)", "Antidepressants", "Antidiabetics", "Antidiarrheals", "Antidotes", "Antiemetics", "Antifungals", "Antihistamines", "Antihyperlipidemics", "Antihypertensives", "Antimalarials", "Antimigraine Agents", "Antineoplastics (Anticancer Agents)", "Antiparasitics", "Antiplatelet Agents", "Antipsychotics", "Antipyretics", "Antiseptics", "Antispasmodics", "Antithyroid Agents", "Antitubercular Agents", "Antitussives", "Antivirals", "Anxiolytics", "Bronchodilators", "Calcium Channel Blockers", "Cardiac Glycosides", "Corticosteroids", "Diuretics", "Expectorants", "Hormones", "Hypnotics", "Immunosuppressants", "Immunostimulants", "Laxatives", "Lipid-Lowering Agents", "Muscle Relaxants", "Narcotic Analgesics (Opioids)", "Nonsteroidal Anti-inflammatory Drugs (NSAIDs)", "Proton Pump Inhibitors", "Sedatives", "Stimulants", "Thrombolytics", "Vasodilators", "Vitamins", "Minerals & Electrolytes"]).map(sc => (
+                    <option key={sc} value={sc}>{sc}</option>
+                  ))}
+                </select>
+              )}
               <textarea placeholder="Description" value={productForm.description} onChange={e=>setProductForm({...productForm, description: e.target.value})} style={{width: '100%', borderRadius: '12px', padding: '12px', border: '1px solid #ddd', minHeight: '80px'}} />
               <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" onChange={e => handleImagePick(e, setProductForm)} required />
               {productForm.imagePreview && <img src={productForm.imagePreview} alt="preview" className="img-preview" />}
