@@ -1,21 +1,27 @@
 {
   "name": "KieZ Pharma",
   "short_name": "KieZ Pharma",
-  "start_url": "/",
+  "description": "Premium Medical Supplies at your doorstep in Uganda.",
+  "id": "com.kiezpharma.app",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#FF4F5A",
-  "description": "Medical Supplies at your doorstep",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["medical", "shopping"],
   "icons": [
     {
       "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Red_cross.svg/192px-Red_cross.svg.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Red_cross.svg/512px-Red_cross.svg.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

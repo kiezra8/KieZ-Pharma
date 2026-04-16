@@ -11,6 +11,25 @@ export default function AccountPage({ onNavigate }) {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = React.useState(null);
+
+  React.useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,6 +118,22 @@ export default function AccountPage({ onNavigate }) {
               <span className="accnt-arrow">›</span>
             </button>
           </div>
+        </div>
+      )}
+
+      {deferredPrompt && (
+        <div className="account-section" style={{marginTop: '20px'}}>
+           <h3 className="accnt-section-title">App Installation</h3>
+           <button className="accnt-item install-item" onClick={handleInstallClick} style={{width: '100%', textAlign: 'left', background: '#ffe8e8', borderRadius: '14px', border: 'none'}}>
+              <span className="accnt-icon" style={{background: '#FF4F5A'}}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </span>
+              <span className="accnt-label" style={{color: '#FF4F5A', fontWeight: '700'}}>Install KieZ Pharma App</span>
+              <span className="accnt-arrow" style={{color: '#FF4F5A'}}>Install</span>
+            </button>
+            <p style={{fontSize: '11px', color: '#888', marginTop: '8px', padding: '0 4px'}}>Get a faster experience by installing our app on your home screen.</p>
         </div>
       )}
 
