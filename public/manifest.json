@@ -3,13 +3,15 @@
   "short_name": "KieZ Pharma",
   "description": "Premium Medical Supplies at your doorstep in Uganda.",
   "id": "com.kiezpharma.app",
-  "start_url": "/?source=pwa",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#FF4F5A",
   "theme_color": "#FF4F5A",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "scope": "/",
-  "categories": ["medical", "shopping"],
+  "lang": "en",
+  "categories": ["medical", "shopping", "health"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Red_cross.svg/192px-Red_cross.svg.png",
@@ -22,6 +24,33 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Red_cross.svg/512px-Red_cross.svg.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=390&h=844&fit=crop",
+      "sizes": "390x844",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "KieZ Pharma Home Screen"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Shop Now",
+      "url": "/?tab=categories",
+      "description": "Browse medical supplies"
+    },
+    {
+      "name": "My Cart",
+      "url": "/?tab=cart",
+      "description": "View your cart"
     }
   ]
 }

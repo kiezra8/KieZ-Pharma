@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import './AccountPage.css';
 
 const WHATSAPP_NUM = '256702370441';
+
+// Detect if running as installed PWA
+const isInStandaloneMode = () =>
+  window.matchMedia('(display-mode: standalone)').matches ||
+  window.navigator.standalone === true;
+
+// Detect iOS
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
 
 export default function AccountPage({ onNavigate }) {
   const { user, isAdmin, signIn, signUp, signOut } = useApp();
@@ -11,18 +19,32 @@ export default function AccountPage({ onNavigate }) {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = React.useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [installed, setInstalled] = useState(isInStandaloneMode());
+  const [showIOSGuide, setShowIOSGuide] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    // Android/Chrome: catch the install prompt
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
     window.addEventListener('beforeinstallprompt', handler);
+
+    // Listen for successful install
+    window.addEventListener('appinstalled', () => {
+      setInstalled(true);
+      setDeferredPrompt(null);
+    });
+
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const handleInstallClick = async () => {
+    if (isIOS()) {
+      setShowIOSGuide(true);
+      return;
+    }
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
@@ -121,19 +143,53 @@ export default function AccountPage({ onNavigate }) {
         </div>
       )}
 
-      {deferredPrompt && (
+      {/* Smart Install Section — works on Android, iOS and Desktop */}
+      {!installed && (
         <div className="account-section" style={{marginTop: '20px'}}>
-           <h3 className="accnt-section-title">App Installation</h3>
-           <button className="accnt-item install-item" onClick={handleInstallClick} style={{width: '100%', textAlign: 'left', background: '#ffe8e8', borderRadius: '14px', border: 'none'}}>
-              <span className="accnt-icon" style={{background: '#FF4F5A'}}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          <h3 className="accnt-section-title">📲 Install App</h3>
+          {isIOS() ? (
+            <div style={{background: '#fff0f1', borderRadius: '14px', padding: '14px 16px'}}>
+              <p style={{fontSize: '13px', fontWeight: '700', color: '#1a1a2e', margin: '0 0 10px'}}>Install on iPhone / iPad</p>
+              <p style={{fontSize: '12px', color: '#555', margin: 0, lineHeight: 1.8}}>
+                1️⃣ Tap the <strong>Share</strong> button at the bottom of Safari<br/>
+                2️⃣ Scroll and tap <strong>"Add to Home Screen"</strong><br/>
+                3️⃣ Tap <strong>"Add"</strong> — done!
+              </p>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={handleInstallClick}
+                disabled={!deferredPrompt}
+                style={{
+                  width: '100%', padding: '16px',
+                  background: deferredPrompt ? 'linear-gradient(135deg, #FF4F5A, #ff7b84)' : '#eee',
+                  color: deferredPrompt ? '#fff' : '#aaa',
+                  border: 'none', borderRadius: '14px',
+                  fontSize: '14px', fontWeight: '700',
+                  cursor: deferredPrompt ? 'pointer' : 'default',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-              </span>
-              <span className="accnt-label" style={{color: '#FF4F5A', fontWeight: '700'}}>Install KieZ Pharma App</span>
-              <span className="accnt-arrow" style={{color: '#FF4F5A'}}>Install</span>
-            </button>
-            <p style={{fontSize: '11px', color: '#888', marginTop: '8px', padding: '0 4px'}}>Get a faster experience by installing our app on your home screen.</p>
+                {deferredPrompt ? 'Tap to Install KieZ Pharma' : 'Open in Chrome to Install'}
+              </button>
+              {!deferredPrompt && (
+                <p style={{fontSize: '11px', color: '#aaa', textAlign: 'center', marginTop: '8px'}}>
+                  Use <strong>Chrome</strong> on Android or <strong>Safari</strong> on iPhone to install.
+                </p>
+              )}
+            </>
+          )}
+        </div>
+      )}
+
+      {installed && (
+        <div style={{textAlign:'center', padding:'12px', color:'#10c97e', fontSize:'13px', fontWeight:'700', background:'#e8faf3', borderRadius:'12px', margin:'16px'}}>
+          ✅ KieZ Pharma is installed on your device!
         </div>
       )}
 
@@ -160,7 +216,7 @@ export default function AccountPage({ onNavigate }) {
           </a>
         </div>
       </div>
-      
+
       <div className="account-version">KieZ Pharma v1.0.0</div>
     </div>
   );

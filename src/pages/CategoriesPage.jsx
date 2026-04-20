@@ -24,7 +24,11 @@ export default function CategoriesPage({ onProductClick, initialCategory }) {
   const filtered = products.filter(p => {
     const isCat = p.category === activeCategory;
     if (!isCat) return false;
-    if (activeSub) return p.subCategory === activeSub;
+    if (activeSub) {
+      // Support both Supabase snake_case (sub_category) and local camelCase (subCategory)
+      const productClass = p.sub_category || p.subCategory || '';
+      return productClass === activeSub;
+    }
     return true;
   });
 
